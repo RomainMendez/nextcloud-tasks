@@ -61,6 +61,16 @@ class TasksShell(cmd.Cmd):
         else:
             self.nextcloud.printTODOs(arg.split()[0])
 
+    def do_print_all(self, arg):
+        'Print all tasks (complete included) by priority order; in nextcloud "None" is No priority, so it is the first.'
+        if len(arg) == 0:
+            if (self.print is not None):
+                self.nextcloud.printTODOs(self.print, include_completed=True)
+            else:
+                self.nextcloud.printTODOs("summary", include_completed=True)
+        else:
+            self.nextcloud.printTODOs(arg.split()[0], include_completed=True)
+
     def do_add(self, arg):
         'Add task; add <summary>'
         priority = int(input("Enter priority [default=0]: ") or "0")
@@ -117,6 +127,20 @@ class TasksShell(cmd.Cmd):
                 print("Task %s not found" % arg)
         else:
             print("Need the <uid>")        
+
+    def do_complete(self, arg):
+        'Set a task as completed'
+        if len(arg.split()) >= 1:
+            try:
+                if (re.match("^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$",arg)):
+                    self.nextcloud.updateTodo(arg, percent_complete=100)
+                else:
+                    uid = self.nextcloud.getUidbySummary(arg)
+                    self.nextcloud.updateTodo(uid, percent_complete=100)
+            except TaskNotFound:
+                print("Task %s not found" % arg)
+        else:
+            print("Need the <uid/summary>")
 
     def do_close(self, arg):
         ' Close nextcloud connection'

@@ -160,6 +160,7 @@ class NextcloudTask:
         """
         self.url = url
         self.list = list
+        self.connected = False
         self.sort = ("priority",)
 
     def connect(self, username, password):
@@ -172,6 +173,10 @@ class NextcloudTask:
         except caldav.error.NotFoundError:
             raise ListNotFound(self.list)
         self.todos = self.client.principal().calendar(self.list).todos()
+        self.connected = True
+
+    def isConnected(self):
+        return self.connected
 
     def close(self):
         """
@@ -235,10 +240,11 @@ class NextcloudTask:
             todo.icalendar_component['PRIORITY'] = priority
         if percent_complete is not None:
             todo.icalendar_component['PERCENT-COMPLETE'] = percent_complete
-            if priority == 0:
+            if percent_complete == 0:
                 todo.icalendar_component['STATUS'] = "NEEDS-ACTION"
-            elif priority == 100:
+            elif percent_complete == 100:
                 todo.icalendar_component['STATUS'] = "COMPLETED"
+                todo.icalendar_component['COMPLETED'] = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
             else:
                 todo.icalendar_component['STATUS'] = "IN-PROCESS"
         # Although Nextcloud will not update the last-modified, we want to update
@@ -294,7 +300,7 @@ class NextcloudTask:
         todo = self.client.principal().calendar(self.list).todo_by_uid(uid)
         print(Todo(todo.data))
 
-    def printTODOs(self, columns):
+    def printTODOs(self, columns, include_completed=False):
         """
         Print tasks by selected columns
         Parameters:
@@ -302,7 +308,7 @@ class NextcloudTask:
         """
         table = PrettyTable()
         table.field_names = [column.upper().strip() for column in columns.split(",")]
-        todos = self.client.principal().calendar(self.list).todos(sort_keys=self.sort)
+        todos = self.client.principal().calendar(self.list).todos(sort_keys=self.sort, include_completed=include_completed)
         for t in todos:
             todo = Todo(t.data)
             row = []
