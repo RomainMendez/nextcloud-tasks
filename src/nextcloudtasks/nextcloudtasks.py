@@ -144,9 +144,6 @@ class Todo:
     def __str__(self):
         return "Todo(uid={}, summary={})".format(self.uid, self.summary)
 
-    def __str__(self):
-        return "summary={}".format(self.summary)
-
 class NextcloudTask:
     """
     Class responsible to handle the Nextcloud caldav connection, adding, deleting,
@@ -183,6 +180,16 @@ class NextcloudTask:
         Close the Nextcloud caldav connection
         """
         self.client.close()
+
+    def setList(self, list):
+        """
+        Set a task list
+        """
+        self.list = list
+        try:
+            self.calendar = self.client.principal().calendar(self.list)
+        except caldav.error.NotFoundError:
+            raise ListNotFound(self.list)
 
     def updateTodos(self):
         """

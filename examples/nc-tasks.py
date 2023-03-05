@@ -77,6 +77,10 @@ class TasksShell(cmd.Cmd):
         percent_complete = int(input("Enter percent-complete [default=0]: ") or "0")
         self.nextcloud.addTodo(arg, priority, percent_complete)
 
+    def do_list(self, arg):
+        'Change list'
+        self.nextcloud.setList(arg)
+
     def do_delete(self, arg):
         'Delete task by uid/summmary'
         if len(arg.split()) >= 1:
