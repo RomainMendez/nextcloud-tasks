@@ -1,5 +1,7 @@
 # Nextcloud Tasks API
 
+[![Python package](https://github.com/Sinkmanu/nextcloud-tasks/actions/workflows/test-todo.yml/badge.svg?branch=main)](https://github.com/Sinkmanu/nextcloud-tasks/actions/workflows/test-todo.yml)
+
 A [Nextcloud Tasks](https://github.com/nextcloud/tasks) API wrapper with some useful examples for CLI
 
 ```py
