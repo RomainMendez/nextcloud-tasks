@@ -9,7 +9,7 @@ import datetime
 """
 Example of CLI program to manage tasks
 
-Example of tasks.rc file:
+Example of .nc-tasks.rc file:
 [DEFAULT]
 url=your.nextclouddomain.foo:443/remote.php/dav/calendars/youruser/
 user=youruser
@@ -18,7 +18,7 @@ list=yourlist
 
 """
 class TasksShell(cmd.Cmd):
-    intro = 'Welcome to Nextcloud tasks CLI.   Type help or ? to list commands.\n'
+    intro = 'Welcome to Nextcloud tasks CLI. Type help or ? to list commands.\n'
     prompt = '(Nextcloud Tasks) '
     url = None
     list = None
@@ -26,12 +26,12 @@ class TasksShell(cmd.Cmd):
 
     # Commands
     def do_load(self, arg):
-        'load configuration file; ".tasks.rc" by default; If not, use <file>'
+        'load configuration file; ".nc-tasks.rc" by default; If not, use <file>'
         config = configparser.ConfigParser()
         if len(arg) > 0:
             filename = arg.split()
         else:
-            filename = os.path.expanduser("~") + '/.tasks.rc'
+            filename = os.path.expanduser("~") + '/.nc-tasks.rc'
         config.read(filename)
         self.nextcloud = NextcloudTask(config['DEFAULT']['url'], config['DEFAULT']['list'])
         self.nextcloud.connect(config['DEFAULT']['user'], config['DEFAULT']['password'])

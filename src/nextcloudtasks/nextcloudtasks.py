@@ -131,15 +131,16 @@ class Todo:
         """
         Convert a Todo in an iCalendar
         """
-        raw = ""
-        return raw
+        return self.todo
 
-    def todo(self):
+    def VTodo(self):
         """
         Return a VTodo object of caldav module
         """
-        raw = ""
-        return raw
+        raw = todo_skeleton.format(datetime.datetime.now().strftime('%Y%m%dT%H%M%S'),
+            datetime.datetime.now().strftime('%Y%m%dT%H%M%S'), datetime.datetime.now().strftime('%Y%m%dT%H%M%S'),
+            self.summary, self.uid, str(self.priority), str(self.percent_complete), self.status)
+        return caldav.objects.Todo(data=raw)
 
     def __str__(self):
         return "Todo(uid={}, summary={})".format(self.uid, self.summary)

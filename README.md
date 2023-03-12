@@ -7,8 +7,8 @@ A [Nextcloud Tasks](https://github.com/nextcloud/tasks) API wrapper with some us
 ```py
 from nextcloudtasks import *
 
-nextcloud = NextcloudTask("foo.bar.org:443/remote.php/dav/calendars/foobar/", "Daily")
-nextcloud.connect("foobar", "foopass")
+nextcloud = NextcloudTask("foo.bar.org:443/remote.php/dav/calendars/foobar/", "myList")
+nextcloud.connect("username", "password")
 nextcloud.printTODOs("summary,categories,created,priority")
 nextcloud.close()
 ```
@@ -25,7 +25,7 @@ pip install nextcloudtasks
 
 The following example is a tool that manages the a Nextcloud TODO list from the command line. It can be found in [examples](/examples)
 
-.tasks.rc
+.nc-tasks.rc
 ```
 [DEFAULT]
 url=your.nextclouddomain.foo:443/remote.php/dav/calendars/youruser/
@@ -41,18 +41,18 @@ Welcome to Nextcloud tasks CLI.   Type help or ? to list commands.
 
 Documented commands (type help <topic>):
 ========================================
-add    complete  delete  exit  load       print    
-close  connect   edit    help  nextcloud  print_all
+add    complete  delete  exit  list  nextcloud  print_all
+close  connect   edit    help  load  print    
 
 (Nextcloud Tasks) load
 (Nextcloud Tasks) print
-+---------------------------------+--------------------------------------+------------+----------+
-|             SUMMARY             |                 UID                  | RELATED-TO | PRIORITY |
-+---------------------------------+--------------------------------------+------------+----------+
-|   "Add license to repository"   | 83d03d4b-42ae-4895-907d-ece9f7824b9d |    None    |    0     |
-| "Readme.md with examples"       | bee1985e-1ff1-4ba1-80fb-2afeaaff2fb1 |    None    |    0     |
-|       Create a repository       | 0a71a3ac-8682-4a0e-97cd-1d93a067ef90 |    None    |    1     |
-+---------------------------------+--------------------------------------+------------+----------+
++---------+--------------------------------------+------------+----------+
+| SUMMARY |                 UID                  | RELATED-TO | PRIORITY |
++---------+--------------------------------------+------------+----------+
+|  Task 2 | d4910d0e-e82f-474c-8b96-39d51a078820 |    None    |    0     |
+|  Task 3 | e823277e-08da-4e38-a98e-67f6e0301eb3 |    None    |    0     |
+|  Task 1 | de92dbda-afba-4bf3-b924-57b4db08f3f2 |    None    |    3     |
++---------+--------------------------------------+------------+----------+
 ```
 
 ## Hacking

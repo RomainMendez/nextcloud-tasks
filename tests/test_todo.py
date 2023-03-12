@@ -47,6 +47,14 @@ class TestTodo(unittest.TestCase):
         self.assertEqual('Todo(uid=pwen9kz48g, summary=Calendar 1 - Task 7)', str(todo))
         f.close()
 
+    def test_return_todo1(self):
+        f = open('tests/assets/vcalendar-vtodo1.ics', 'r')
+        test = f.read()
+        f.close()
+        todo = Todo(test)
+        raw = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Nextcloud Tasks 0.11.3\nBEGIN:VTODO\nCREATED:20181119T183919\nDTSTAMP:20190918T095816\nLAST-MODIFIED:20190918T095816\nUID:pwen4kz18g\nSUMMARY:Calendar 1 - Task 1\nPRIORITY:1\nDUE:20190101T123400\nEND:VTODO\nEND:VCALENDAR\n"
+        t_todo = todo.todo
+        self.assertEqual(t_todo, raw)
 
 if __name__ == '__main__':
     unittest.main()
