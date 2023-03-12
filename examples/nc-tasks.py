@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from nextcloudtasks import *
 import cmd
 import getpass
