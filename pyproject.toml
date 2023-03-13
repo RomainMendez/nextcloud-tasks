@@ -15,6 +15,7 @@ readme = "README.md"
 requires-python = ">=3.6"
 dependencies = [
   "caldav",
+  "prettytable"
 ]
 classifiers = [
   "Programming Language :: Python :: 3",
