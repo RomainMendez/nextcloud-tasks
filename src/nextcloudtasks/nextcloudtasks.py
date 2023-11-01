@@ -161,11 +161,11 @@ class NextcloudTask:
         self.connected = False
         self.sort = ("priority",)
 
-    def connect(self, username, password):
+    def connect(self, username, password, method="https://"):
         """
         Connect to nextcloud CALDAV using caldav python module
         """
-        self.client = caldav.DAVClient("https://"+username+":"+password+"@"+self.url)
+        self.client = caldav.DAVClient(method+username+":"+password+"@"+self.url)
         try:
             self.calendar = self.client.principal().calendar(self.list)
         except caldav.error.NotFoundError:
@@ -308,7 +308,7 @@ class NextcloudTask:
         todo = self.client.principal().calendar(self.list).todo_by_uid(uid)
         print(Todo(todo.data))
 
-    def printTODOs(self, columns, include_completed=False):
+    def create_todo_string(self, columns, include_completed=False)-> str:
         """
         Print tasks by selected columns
         Parameters:
@@ -345,4 +345,7 @@ class NextcloudTask:
                 else:
                     row.append(i.strip())
             table.add_row(row)
-        print(table)
+        return str(table)
+
+    def printTODOs(self, columns, include_completed=False):
+        print(self.create_todo_string(columns, include_completed))
